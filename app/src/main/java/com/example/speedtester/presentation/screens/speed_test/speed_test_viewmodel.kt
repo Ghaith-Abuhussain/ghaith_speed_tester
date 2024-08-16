@@ -1,15 +1,19 @@
 package com.example.speedtester.presentation.screens.speed_test
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.example.speedtester.data.data_source.db.settings.Settings
+import com.example.speedtester.domain.repository.SettingsDatabaseRepository
 import com.example.speedtester.domain.repository.SpeedTestRepository
 import com.example.speedtester.ui.theme.FileDownloadUploadNumber
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody
 
-class SpeedTestViewModel(private val repository: SpeedTestRepository) : ViewModel() {
+class SpeedTestViewModel(private val repository: SpeedTestRepository, private val settingsDatabaseRepository: SettingsDatabaseRepository, private val context: Context) : ViewModel() {
     // To know if the download speed calculations are finished
     private val _downloadSpeedProcedure = MutableLiveData(true)
     val downloadSpeedProcedure: LiveData<Boolean> get() = _downloadSpeedProcedure
@@ -26,6 +30,17 @@ class SpeedTestViewModel(private val repository: SpeedTestRepository) : ViewMode
     private val _uploadSpeed = MutableLiveData<Float>(0f)
     val uploadSpeed: LiveData<Float> get() = _uploadSpeed
 
+    private val _settings = MutableLiveData<Settings>()
+    val settings: LiveData<Settings> get() = _settings
+    init {
+        // Here we collect the last settings stored in the database and update the _settings mutable live data values to use it in the settings screen
+        viewModelScope.launch {
+            settingsDatabaseRepository.getSettingsById(1).asFlow().collect {
+                _settings.value = it
+            }
+        }
+    }
+
     fun testDownloadSpeed() {
         _downloadSpeed.value = 0f
         _downloadSpeedProcedure.value = false
@@ -33,11 +48,10 @@ class SpeedTestViewModel(private val repository: SpeedTestRepository) : ViewMode
         viewModelScope.launch {
             try {
                 for(i in 1..FileDownloadUploadNumber) {
-                    sumOfDownloadSpeeds += repository.downloadSpeedTest()
+                    sumOfDownloadSpeeds += repository.downloadSpeedTest(context)
 
                     _downloadSpeed.value = ((sumOfDownloadSpeeds / i) * 8) / 1000.0f
 
-                    println("Download Speed: " + _downloadSpeed.value)
                 }
                 _downloadSpeedProcedure.value = true
             } catch (e: Exception) {
@@ -54,10 +68,9 @@ class SpeedTestViewModel(private val repository: SpeedTestRepository) : ViewMode
         viewModelScope.launch {
             try {
                 for(i in 1..FileDownloadUploadNumber) {
-                    sumOfUploadSpeeds += repository.uploadSpeedTest(file)
+                    sumOfUploadSpeeds += repository.uploadSpeedTest(context)
 
                     _uploadSpeed.value = ((sumOfUploadSpeeds / i) * 8) / 1000.0f
-                    println("Upload Speed: " + _uploadSpeed.value)
                 }
                 _uploadSpeedProcedure.value = true
             } catch (e: Exception) {

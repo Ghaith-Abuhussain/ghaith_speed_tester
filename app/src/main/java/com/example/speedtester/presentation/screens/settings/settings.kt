@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +28,7 @@ import com.example.speedtester.presentation.composables.SpeedTestChoosingRadioBu
 
 // This is the settings screen composable
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
+fun SettingsScreen(viewModel: SettingsViewModel, modifier: Modifier = Modifier, onChangeMode: (newMode: Boolean, newSpeedType: Int) -> Unit) {
     // The current state of the settings in the database driven fom the viewmodel
     val settings by viewModel.settings.observeAsState()
 
@@ -40,6 +41,10 @@ fun SettingsScreen(viewModel: SettingsViewModel, modifier: Modifier = Modifier) 
     val options = listOf("Download", "Upload", "Both")
     // The current selected option of the radio button
     var selectedOption by remember { mutableStateOf(options[speedTestType - 1]) }
+
+    LaunchedEffect(settings) {
+        onChangeMode(settings?.mode ?: false, settings?.speedType ?: 1)
+    }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +61,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, modifier: Modifier = Modifier) 
             )
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.width(300.dp)) {
                 Text(text = "MODE", style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.primary, fontSize = 20.sp))
-                DarkModeSwitch(!value,
+                DarkModeSwitch(!(settings?.mode ?: false),
                     Modifier
                         .padding(24.dp)
                         .width(160.dp)

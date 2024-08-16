@@ -15,6 +15,9 @@ interface SettingsDao {
     @Query("SELECT * FROM settings WHERE id = :id")
     fun getSettingsById(id: Int): LiveData<Settings?>
 
+    @Query("SELECT * FROM settings WHERE id = :id")
+    fun getSettingsRecord(id: Int): Settings?
+
     @Query("UPDATE settings SET mode = :mode WHERE id = :id")
     suspend fun updateMode(id: Int, mode: Boolean)
 

@@ -26,6 +26,7 @@ fun HomeScreen(
     modifier: Modifier,
     speedTestViewModel: SpeedTestViewModel,
     settingsViewModel: SettingsViewModel,
+    onChangeMode: (newMode: Boolean, newSpeedType: Int) -> Unit
 ) {
     // the controller of the navigation host
     val bottomNavController = rememberNavController()
@@ -52,6 +53,7 @@ fun HomeScreen(
             modifier = modifier.padding(paddingValues),
             speedTestViewModel = speedTestViewModel,
             settingsViewModel = settingsViewModel,
+            onChangeMode = onChangeMode
         )
 
     }

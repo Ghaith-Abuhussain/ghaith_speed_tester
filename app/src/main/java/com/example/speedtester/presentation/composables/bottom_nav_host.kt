@@ -21,6 +21,7 @@ fun BottomNavHost(
     modifier: Modifier = Modifier,
     speedTestViewModel: SpeedTestViewModel,
     settingsViewModel: SettingsViewModel,
+    onChangeMode: (newMode: Boolean, newSpeedType: Int) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -28,12 +29,13 @@ fun BottomNavHost(
         modifier = modifier
     ) {
         composable(route = SpeedTestPage.route) {
-            SpeedTestScreen(speedType, speedTestViewModel, modifier = Modifier.fillMaxSize(),)
+            SpeedTestScreen(speedType, speedTestViewModel, modifier = Modifier.fillMaxSize(), onChangeMode = onChangeMode)
         }
         composable(route = SettingsPage.route) {
             SettingsScreen(
                 modifier = Modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
+                onChangeMode = onChangeMode
             )
         }
     }

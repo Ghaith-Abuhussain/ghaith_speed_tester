@@ -1,11 +1,11 @@
 package com.example.speedtester.domain.repository
 
-import okhttp3.RequestBody
+import android.content.Context
 
 interface SpeedTestRepository {
 
-    suspend fun downloadSpeedTest(): Long
+    suspend fun downloadSpeedTest(context: Context): Long
 
-    suspend fun uploadSpeedTest(file: RequestBody): Long
+    suspend fun uploadSpeedTest(context: Context): Long
 
 }
