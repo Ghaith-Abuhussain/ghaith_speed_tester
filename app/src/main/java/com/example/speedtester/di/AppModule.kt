@@ -41,7 +41,7 @@ class AppModule {
                     super.onCreate(db)
                     CoroutineScope(Dispatchers.IO).launch {
                         provideAppDatabase(appContext)
-                            .settingsDao().insert(Settings(id = 1, mode = true, speedType = 1))
+                            .settingsDao().insert(Settings(id = 1, mode = false, speedType = 1))
                     }
                 }
             })
