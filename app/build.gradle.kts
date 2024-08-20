@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin") // Dagger Hilt plugin for Android.
 }
 
 android {
@@ -88,4 +88,10 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+    // Dagger Hilt
+    implementation("com.google.dagger:hilt-android:2.48.1") // Dependency injection with Dagger Hilt for Android.
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1") // Annotation processor for Dagger Hilt.
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0") // Hilt extension for Navigation in Compose.
+    kapt("com.google.dagger:dagger-android-processor:2.48.1") // Annotation processor for Dagger Hilt.
 }

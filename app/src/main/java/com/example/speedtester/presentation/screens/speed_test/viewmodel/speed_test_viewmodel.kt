@@ -1,4 +1,4 @@
-package com.example.speedtester.presentation.screens.speed_test
+package com.example.speedtester.presentation.screens.speed_test.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -10,10 +10,14 @@ import com.example.speedtester.data.data_source.db.settings.Settings
 import com.example.speedtester.domain.repository.SettingsDatabaseRepository
 import com.example.speedtester.domain.repository.SpeedTestRepository
 import com.example.speedtester.ui.theme.FileDownloadUploadNumber
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody
+import javax.inject.Inject
 
-class SpeedTestViewModel(private val repository: SpeedTestRepository, private val settingsDatabaseRepository: SettingsDatabaseRepository, private val context: Context) : ViewModel() {
+@HiltViewModel
+class SpeedTestViewModel @Inject constructor(private val repository: SpeedTestRepository, private val settingsDatabaseRepository: SettingsDatabaseRepository, @ApplicationContext private val context: Context) : ViewModel() {
     // To know if the download speed calculations are finished
     private val _downloadSpeedProcedure = MutableLiveData(true)
     val downloadSpeedProcedure: LiveData<Boolean> get() = _downloadSpeedProcedure

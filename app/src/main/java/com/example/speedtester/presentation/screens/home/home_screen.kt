@@ -16,8 +16,8 @@ import com.example.speedtester.core.util.bottomBarTabScreens
 import com.example.speedtester.presentation.composables.BottomNavHost
 import com.example.speedtester.presentation.composables.NavBar
 import com.example.speedtester.presentation.composables.navigateSingleTopTo
-import com.example.speedtester.presentation.screens.settings.SettingsViewModel
-import com.example.speedtester.presentation.screens.speed_test.SpeedTestViewModel
+import com.example.speedtester.presentation.screens.settings.viewmodel.SettingsViewModel
+import com.example.speedtester.presentation.screens.speed_test.viewmodel.SpeedTestViewModel
 
 // This is the home screen that contains the Bottom navigation host
 @Composable
@@ -26,7 +26,6 @@ fun HomeScreen(
     modifier: Modifier,
     speedTestViewModel: SpeedTestViewModel,
     settingsViewModel: SettingsViewModel,
-    onChangeMode: (newMode: Boolean, newSpeedType: Int) -> Unit
 ) {
     // the controller of the navigation host
     val bottomNavController = rememberNavController()
@@ -53,7 +52,6 @@ fun HomeScreen(
             modifier = modifier.padding(paddingValues),
             speedTestViewModel = speedTestViewModel,
             settingsViewModel = settingsViewModel,
-            onChangeMode = onChangeMode
         )
 
     }

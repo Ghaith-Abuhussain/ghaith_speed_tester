@@ -1,4 +1,4 @@
-package com.example.speedtester.presentation.screens.settings
+package com.example.speedtester.presentation.screens.settings.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,9 +7,12 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.example.speedtester.data.data_source.db.settings.Settings
 import com.example.speedtester.domain.repository.SettingsDatabaseRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingsViewModel(private val settingsDatabaseRepository: SettingsDatabaseRepository) :
+@HiltViewModel
+class SettingsViewModel @Inject constructor(private val settingsDatabaseRepository: SettingsDatabaseRepository) :
     ViewModel() {
 
     private val _settings = MutableLiveData<Settings>()

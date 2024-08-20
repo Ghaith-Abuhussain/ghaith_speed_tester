@@ -1,4 +1,4 @@
-package com.example.speedtester.presentation.screens.speed_test
+package com.example.speedtester.presentation.screens.speed_test.composables
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement

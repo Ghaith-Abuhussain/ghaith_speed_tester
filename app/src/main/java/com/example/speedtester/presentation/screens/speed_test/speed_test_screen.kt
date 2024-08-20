@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.example.speedtester.core.util.generateText
+import com.example.speedtester.presentation.screens.speed_test.viewmodel.SpeedTestViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -40,7 +41,11 @@ suspend fun startAnimation(animationValue: Float, animation: Animatable<Float, A
 
 // This is the speed screen composable that shows the header, indicators and start button
 @Composable
-fun SpeedTestScreen(speedType: Int, viewModel: SpeedTestViewModel, modifier: Modifier, onChangeMode: (newMode: Boolean, newSpeedType: Int) -> Unit) {
+fun SpeedTestScreen(
+    speedType: Int,
+    viewModel: SpeedTestViewModel,
+    modifier: Modifier,
+) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -66,9 +71,6 @@ fun SpeedTestScreen(speedType: Int, viewModel: SpeedTestViewModel, modifier: Mod
 
     val settings by viewModel.settings.observeAsState()
 
-    LaunchedEffect(settings ) {
-        onChangeMode(settings?.mode ?: false, settings?.speedType ?: 1)
-    }
     // This Lunch effect is used to animate the movements of the archs every time the download and upload speed changes
     LaunchedEffect(downloadSpeed, uploadSpeed) {
         coroutineScope.launch {
@@ -81,7 +83,7 @@ fun SpeedTestScreen(speedType: Int, viewModel: SpeedTestViewModel, modifier: Mod
 
     Scaffold(
         bottomBar = {
-            if(!isLandscape) {
+            if (!isLandscape) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -105,7 +107,7 @@ fun SpeedTestScreen(speedType: Int, viewModel: SpeedTestViewModel, modifier: Mod
             }
         },
     ) { paddingValues ->
-        if(!isLandscape) {
+        if (!isLandscape) {
             PortraitLayout(
                 modifier = Modifier
                     .fillMaxSize()

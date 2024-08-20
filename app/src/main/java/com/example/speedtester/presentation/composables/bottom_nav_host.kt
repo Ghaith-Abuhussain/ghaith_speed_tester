@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import com.example.speedtester.core.util.SettingsPage
 import com.example.speedtester.core.util.SpeedTestPage
 import com.example.speedtester.presentation.screens.settings.SettingsScreen
-import com.example.speedtester.presentation.screens.settings.SettingsViewModel
+import com.example.speedtester.presentation.screens.settings.viewmodel.SettingsViewModel
 import com.example.speedtester.presentation.screens.speed_test.SpeedTestScreen
-import com.example.speedtester.presentation.screens.speed_test.SpeedTestViewModel
+import com.example.speedtester.presentation.screens.speed_test.viewmodel.SpeedTestViewModel
 
 // This is the composable that is responsible of moving between the pages of the navigation bar
 @Composable
@@ -21,7 +21,6 @@ fun BottomNavHost(
     modifier: Modifier = Modifier,
     speedTestViewModel: SpeedTestViewModel,
     settingsViewModel: SettingsViewModel,
-    onChangeMode: (newMode: Boolean, newSpeedType: Int) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -29,13 +28,12 @@ fun BottomNavHost(
         modifier = modifier
     ) {
         composable(route = SpeedTestPage.route) {
-            SpeedTestScreen(speedType, speedTestViewModel, modifier = Modifier.fillMaxSize(), onChangeMode = onChangeMode)
+            SpeedTestScreen(speedType, speedTestViewModel, modifier = Modifier.fillMaxSize())
         }
         composable(route = SettingsPage.route) {
             SettingsScreen(
                 modifier = Modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
-                onChangeMode = onChangeMode
             )
         }
     }

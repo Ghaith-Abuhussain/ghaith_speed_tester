@@ -7,9 +7,11 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import javax.inject.Inject
 
 // this is the implementation of the SpeedTestRepository to download and upload the files from/to the server
-class SpeedTestRepositoryImpl(private val service: SpeedTestService) : SpeedTestRepository{
+
+class SpeedTestRepositoryImpl @Inject constructor(private val service: SpeedTestService) : SpeedTestRepository{
     override suspend fun downloadSpeedTest(context: Context): Long {
         val assetManager = context.assets
 
@@ -40,7 +42,7 @@ class SpeedTestRepositoryImpl(private val service: SpeedTestService) : SpeedTest
             val endTime = System.currentTimeMillis()
 
             return if(downloadResponse.code() == 200) {
-                 requestFile.contentLength() / ((endTime - startTime) - serverResponse)
+                 if(((endTime - startTime) - serverResponse) > 0) requestFile.contentLength() / ((endTime - startTime) - serverResponse) else 0
             } else {
                 0L
             }
@@ -75,7 +77,7 @@ class SpeedTestRepositoryImpl(private val service: SpeedTestService) : SpeedTest
             val response = service.uploadTestFile(filePart)
             val endTime = System.currentTimeMillis()
 
-            return if(response.code() == 200) requestFile.contentLength() / ((endTime - startTime) - serverResponse) else 0
+            return if(response.code() == 200) if(((endTime - startTime) - serverResponse) > 0) requestFile.contentLength() / ((endTime - startTime) - serverResponse) else 0 else 0
         } catch (e: Exception) {
             println("${e.message}")
             return 0
